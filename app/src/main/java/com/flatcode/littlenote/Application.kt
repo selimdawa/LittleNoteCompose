@@ -1,26 +1,26 @@
 package com.flatcode.littlenote
 
 import android.app.Application
-//import androidx.appfunctions.AppFunctionConfiguration
-//import androidx.hilt.work.HiltWorkerFactory
-//import androidx.work.Configuration
-//import com.flatcode.littlenote.functions.NoteFunctions
+import androidx.appfunctions.AppFunctionConfiguration
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
+import com.flatcode.littlenote.functions.NoteFunctions
 import dagger.hilt.android.HiltAndroidApp
 import io.selimdawa.multicolors.MultiColorManager
 import timber.log.Timber
-//import javax.inject.Inject
+import javax.inject.Inject
 
 @HiltAndroidApp
-class Application : Application(){//, AppFunctionConfiguration.Provider, Configuration.Provider {
+class Application : Application(), AppFunctionConfiguration.Provider, Configuration.Provider {
 
-    //@Inject
-    //lateinit var noteFunctions: NoteFunctions
-//
-    //@Inject
-    //lateinit var workerFactory: HiltWorkerFactory
+    @Inject
+    lateinit var noteFunctions: NoteFunctions
 
-    //override val workManagerConfiguration: Configuration
-    //    get() = Configuration.Builder().setWorkerFactory(workerFactory).build()
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
+
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder().setWorkerFactory(workerFactory).build()
 
     override fun onCreate() {
         super.onCreate()
@@ -31,7 +31,7 @@ class Application : Application(){//, AppFunctionConfiguration.Provider, Configu
         }
     }
 
-    //override val appFunctionConfiguration: AppFunctionConfiguration =
-    //    AppFunctionConfiguration.Builder()
-    //        .addEnclosingClassFactory(NoteFunctions::class.java) { noteFunctions }.build()
+    override val appFunctionConfiguration: AppFunctionConfiguration =
+        AppFunctionConfiguration.Builder()
+            .addEnclosingClassFactory(NoteFunctions::class.java) { noteFunctions }.build()
 }
