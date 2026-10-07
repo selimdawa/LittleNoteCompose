@@ -2,9 +2,10 @@ package com.flatcode.littlenote
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -29,19 +30,26 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.flatcode.littlenote.ui.theme.AppIcons
 import com.flatcode.littlenote.ui.theme.Strings
+import com.flatcode.littlenote.utils.BiometricHelper
+import com.flatcode.littlenote.utils.DATA
 import com.flatcode.littlenote.utils.DATA.MC_BG
 import com.flatcode.littlenote.utils.launchActivity
+import com.flatcode.littlenote.viewmodel.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
 @SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
-class SplashActivity : ComponentActivity() {
+class SplashActivity : FragmentActivity() {
+
+    private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -50,18 +58,64 @@ class SplashActivity : ComponentActivity() {
             SplashScreen()
         }
 
+        observeAuthStatus()
+        viewModel.checkUserAndRedirect(DATA.DELAY_LOG.milliseconds)
+    }
+
+    private fun observeAuthStatus() {
         lifecycleScope.launch {
-            delay(TIME_PER_MILLIS.toLong().milliseconds)
-            launch()
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.authStatus.collect { result ->
+                    when (result) {
+                        is AuthViewModel.AuthResult.Authenticated -> {
+                            checkBiometricAndNavigate()
+                        }
+
+                        is AuthViewModel.AuthResult.Success -> {
+                            if (result.message == "Anonymous Login Successful") {
+                                Toast.makeText(
+                                    this@SplashActivity,
+                                    Strings.TEMPORARY_LOG,
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                goToHome()
+                            }
+                        }
+
+                        is AuthViewModel.AuthResult.Error -> {
+                            Toast.makeText(
+                                this@SplashActivity,
+                                "${Strings.ERROR_LOG}${result.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            finish()
+                        }
+
+                        else -> {}
+                    }
+                }
+            }
         }
     }
 
-    private fun launch() {
-        launchActivity<MainActivity>(finish = true)
+    private fun checkBiometricAndNavigate() {
+        if (BiometricHelper.isBiometricAvailable(this)) {
+            BiometricHelper.showBiometricPrompt(
+                activity = this,
+                onSuccess = {
+                    goToHome()
+                },
+                onError = { error ->
+                    Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
+                }
+            )
+        } else {
+            goToHome()
+        }
     }
 
-    companion object {
-        const val TIME_PER_MILLIS = 1000
+    private fun goToHome() {
+        launchActivity<MainActivity>(finish = true)
     }
 }
 
