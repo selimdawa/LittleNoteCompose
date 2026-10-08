@@ -1,4 +1,4 @@
-package com.flatcode.littlenote
+package com.flatcode.littlenote.ui.splash
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -34,6 +34,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.flatcode.littlenote.ui.main.MainActivity
 import com.flatcode.littlenote.ui.theme.AppIcons
 import com.flatcode.littlenote.ui.theme.Strings
 import com.flatcode.littlenote.utils.BiometricHelper
@@ -70,27 +71,16 @@ class SplashActivity : FragmentActivity() {
                         is AuthViewModel.AuthResult.Authenticated -> {
                             checkBiometricAndNavigate()
                         }
-
                         is AuthViewModel.AuthResult.Success -> {
                             if (result.message == "Anonymous Login Successful") {
-                                Toast.makeText(
-                                    this@SplashActivity,
-                                    Strings.TEMPORARY_LOG,
-                                    Toast.LENGTH_LONG
-                                ).show()
+                                Toast.makeText(this@SplashActivity, Strings.TEMPORARY_LOG, Toast.LENGTH_LONG).show()
                                 goToHome()
                             }
                         }
-
                         is AuthViewModel.AuthResult.Error -> {
-                            Toast.makeText(
-                                this@SplashActivity,
-                                "${Strings.ERROR_LOG}${result.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(this@SplashActivity, "${Strings.ERROR_LOG}${result.message}", Toast.LENGTH_SHORT).show()
                             finish()
                         }
-
                         else -> {}
                     }
                 }
