@@ -9,13 +9,13 @@ plugins {
 }
 
 android {
-    namespace = "com.flatcode.littlenote"
+    namespace = "com.flatcode.littlenotecompose"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.flatcode.littlenote"
+        applicationId = "com.flatcode.littlenotecompose"
         minSdk = 24
         targetSdk = 37
         versionCode = 7
