@@ -98,8 +98,7 @@ fun LittleNoteNavHost(
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
         popEnterTransition = { EnterTransition.None },
-        popExitTransition = { ExitTransition.None }
-    ) {
+        popExitTransition = { ExitTransition.None }) {
         composable(Routes.HOME) {
             HomeScreen(
                 homeViewModel = homeViewModel,
@@ -110,8 +109,7 @@ fun LittleNoteNavHost(
                 onNavigateToNoteDetails = { note, color ->
                     navController.navigate(
                         Routes.noteDetailsRoute(
-                            note.id,
-                            color
+                            note.id, color
                         )
                     )
                 },
@@ -123,9 +121,7 @@ fun LittleNoteNavHost(
 
         composable(Routes.ADD_NOTE) {
             AddNoteScreen(
-                noteViewModel = noteViewModel,
-                onBack = { navController.popBackStack() }
-            )
+                noteViewModel = noteViewModel, onBack = { navController.popBackStack() })
         }
 
         composable(
@@ -138,8 +134,7 @@ fun LittleNoteNavHost(
                 EditNoteScreen(
                     note = note,
                     noteViewModel = noteViewModel,
-                    onBack = { navController.popBackStack() }
-                )
+                    onBack = { navController.popBackStack() })
             }
         }
 
@@ -147,9 +142,7 @@ fun LittleNoteNavHost(
             route = Routes.NOTE_DETAILS,
             arguments = listOf(
                 navArgument("noteId") { type = NavType.IntType },
-                navArgument("color") { type = NavType.IntType }
-            )
-        ) { backStackEntry ->
+                navArgument("color") { type = NavType.IntType })) { backStackEntry ->
             val noteId = backStackEntry.arguments?.getInt("noteId") ?: -1
             val colorInt = backStackEntry.arguments?.getInt("color") ?: 0
             val note = allNotes.find { it.id == noteId }
@@ -161,8 +154,7 @@ fun LittleNoteNavHost(
                     onBack = { navController.popBackStack() },
                     onEditNote = { selectedNote ->
                         navController.navigate(Routes.editNoteRoute(selectedNote.id))
-                    }
-                )
+                    })
             }
         }
 
@@ -175,28 +167,22 @@ fun LittleNoteNavHost(
                     }
                 },
                 onNavigateToRegister = { navController.navigate(Routes.REGISTER) },
-                onNavigateToForgetPassword = { navController.navigate(Routes.FORGET_PASSWORD) }
-            )
+                onNavigateToForgetPassword = { navController.navigate(Routes.FORGET_PASSWORD) })
         }
 
         composable(Routes.REGISTER) {
-            RegisterScreen(
-                authViewModel = authViewModel,
-                onNavigateToHome = {
-                    navController.navigate(Routes.HOME) {
-                        popUpTo(Routes.HOME) { inclusive = true }
-                    }
-                },
-                onNavigateToLogin = { navController.navigate(Routes.LOGIN) }
-            )
+            RegisterScreen(authViewModel = authViewModel, onNavigateToHome = {
+                navController.navigate(Routes.HOME) {
+                    popUpTo(Routes.HOME) { inclusive = true }
+                }
+            }, onNavigateToLogin = { navController.navigate(Routes.LOGIN) })
         }
 
         composable(Routes.FORGET_PASSWORD) {
             ForgetPasswordScreen(
                 authViewModel = authViewModel,
                 onNavigateToLogin = { navController.navigate(Routes.LOGIN) },
-                onNavigateToRegister = { navController.navigate(Routes.REGISTER) }
-            )
+                onNavigateToRegister = { navController.navigate(Routes.REGISTER) })
         }
     }
 }
