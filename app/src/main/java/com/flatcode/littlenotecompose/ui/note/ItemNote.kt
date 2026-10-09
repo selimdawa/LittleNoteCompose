@@ -112,27 +112,37 @@ fun ItemNote(
                             tint = Dark,
                             modifier = Modifier
                                 .size(20.dp)
-                                .clickable { showMenu = true }
-                        )
+                                .clickable { showMenu = true })
 
                         DropdownMenu(
                             expanded = showMenu,
-                            onDismissRequest = { showMenu = false }
+                            onDismissRequest = { showMenu = false },
+                            modifier = Modifier.background(DATA.COLOR_ON_BACKGROUND)
                         ) {
-                            DropdownMenuItem(
-                                text = { Text(text = DATA.EDIT) },
-                                onClick = {
-                                    showMenu = false
-                                    onEdit(note)
-                                }
-                            )
-                            DropdownMenuItem(
-                                text = { Text(text = DATA.DELETE) },
-                                onClick = {
-                                    showMenu = false
-                                    onDelete(note)
-                                }
-                            )
+                            DropdownMenuItem(text = {
+                                Text(
+                                    text = DATA.EDIT,
+                                    color = DATA.COLOR_ERROR,
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Start,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                            }, onClick = {
+                                showMenu = false
+                                onEdit(note)
+                            })
+                            DropdownMenuItem(text = {
+                                Text(
+                                    text = DATA.DELETE,
+                                    color = DATA.COLOR_ERROR,
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Start,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                            }, onClick = {
+                                showMenu = false
+                                onDelete(note)
+                            })
                         }
                     }
                 }

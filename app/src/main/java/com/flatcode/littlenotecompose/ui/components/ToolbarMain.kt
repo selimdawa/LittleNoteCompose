@@ -97,7 +97,7 @@ fun ToolbarMain(
                     modifier = Modifier.size(Dimen.SPACING_30)
                 ) {
                     Icon(
-                        imageVector = AppIcons.ExitToApp,
+                        imageVector = AppIcons.Power,
                         contentDescription = Strings.CD_LOGOUT,
                         tint = White,
                         modifier = Modifier.size(Dimen.SPACING_30)
