@@ -1,4 +1,4 @@
-<h1 align="center">Little Note - Kotlin</h1>
+<h1 align="center">Little Note - Kotlin (Compose)</h1>
 
 <p align="center">
  <a><img alt="Min SDK" src="https://img.shields.io/badge/Min SDK-24-020290?logo=android&logoColor=white"/></a>
@@ -69,26 +69,28 @@ Add/Edit Note | Details | Login Note
 ---
 
 ### 🏗️ Technical Architecture
-The application is engineered using **MVVM (Model-View-ViewModel)** architectural patterns, strictly adhering to **Clean Architecture** principles to promote modularity and ease of maintenance.
+The application is engineered using **MVVM (Model-View-ViewModel)** architectural patterns, strictly adhering to **Clean Architecture** principles and **Jetpack Compose** for modern, declarative UI development.
 
 ```text
-app/src/main/java/com/flatcode/littlenote/
-├── di/                 # Dependency Injection (Hilt modules)
-├── ui/                 # Presentation Layer
-│   ├── auth/           # Authentication (Login, Register, Forget Password)
-│   ├── home/           # Dashboard and Navigation
-│   ├── note/           # Note Operations (Add, Edit, View, Details)
-│   ├── splash/         # App Entry Point
-│   └── adapter/        # RecyclerView Adapters
-├── viewmodel/          # Logic Layer (State Management & UI Logic)
+app/src/main/java/com/flatcode/littlenotecompose/
 ├── data/               # Data Layer (Local & Remote)
 │   ├── dao/            # Room Database DAOs
+│   ├── database/       # Room Database Configuration
 │   ├── model/          # Data Entities & Models
 │   ├── repository/     # Repository Pattern Implementation
-│   ├── database/       # Room Database Configuration
 │   └── sync/           # Firebase Sync Logic
+├── di/                 # Dependency Injection (Hilt modules)
 ├── functions/          # Specialized Workflows (AppFunctions)
-└── utils/              # Extensions, Constants & Utility Classes
+├── ui/                 # Presentation Layer (Jetpack Compose)
+│   ├── auth/           # Authentication (Login, Register, Forget Password)
+│   ├── components/     # Reusable UI Components
+│   ├── home/           # Dashboard
+│   ├── main/           # Main Activity Entry Point
+│   ├── note/           # Note Operations (Add, Edit, Details)
+│   ├── splash/         # Splash Activity
+│   └── theme/          # Theme, Colors, Dimensions & Strings
+├── utils/              # Extensions, Constants & Utility Classes
+└── viewmodel/          # Logic Layer (State Management & UI Logic)
 ```
 
 ---

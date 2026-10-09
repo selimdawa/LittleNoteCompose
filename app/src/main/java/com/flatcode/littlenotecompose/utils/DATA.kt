@@ -16,10 +16,6 @@ object DATA {
 
     const val PARENT_PATH = "notes"
     const val CHILD_PATH = "myNotes"
-    const val NOTE = "note"
-
-    const val COLOR = "code"
-    const val DEFAULT_COLOR = 0
     const val DELAY_LOG = 2000
     const val EDIT = "Edit"
     const val DELETE = "Delete"

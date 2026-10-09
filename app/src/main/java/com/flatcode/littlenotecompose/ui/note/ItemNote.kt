@@ -1,7 +1,6 @@
 package com.flatcode.littlenotecompose.ui.note
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,6 +40,7 @@ import com.flatcode.littlenotecompose.ui.theme.Dimen
 import com.flatcode.littlenotecompose.ui.theme.OverlayDark20
 import com.flatcode.littlenotecompose.ui.theme.White
 import com.flatcode.littlenotecompose.utils.DATA
+import com.flatcode.littlenotecompose.utils.noRippleClickable
 
 @Composable
 fun ItemNote(
@@ -59,7 +59,7 @@ fun ItemNote(
                 .fillMaxWidth()
                 .padding(horizontal = Dimen.SPACING_5)
                 .padding(bottom = Dimen.SPACING_10)
-                .clickable { onClick(note, cardColor) },
+                .noRippleClickable { onClick(note, cardColor) },
             shape = RoundedCornerShape(Dimen.CARD_CORNER_RADIUS_SMALL),
             colors = CardDefaults.cardColors(containerColor = cardColor),
             elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
@@ -112,7 +112,8 @@ fun ItemNote(
                             tint = Dark,
                             modifier = Modifier
                                 .size(20.dp)
-                                .clickable { showMenu = true })
+                                .noRippleClickable { showMenu = true }
+                        )
 
                         DropdownMenu(
                             expanded = showMenu,

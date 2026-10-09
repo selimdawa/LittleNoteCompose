@@ -12,7 +12,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,6 +26,7 @@ import com.flatcode.littlenotecompose.ui.theme.Dimen
 import com.flatcode.littlenotecompose.ui.theme.Strings
 import com.flatcode.littlenotecompose.ui.theme.White
 import com.flatcode.littlenotecompose.utils.DATA.MC_BG
+import com.flatcode.littlenotecompose.utils.noRippleClickable
 
 @Composable
 fun ToolbarAddEdit(
@@ -57,17 +57,14 @@ fun ToolbarAddEdit(
                     .padding(horizontal = Dimen.SPACING_10),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(
-                    onClick = onBackClick,
-                    modifier = Modifier.size(Dimen.SPACING_30)
-                ) {
-                    Icon(
-                        imageVector = AppIcons.ArrowBack,
-                        contentDescription = Strings.CD_BACK,
-                        tint = White,
-                        modifier = Modifier.size(Dimen.SPACING_30)
-                    )
-                }
+                Icon(
+                    imageVector = AppIcons.ArrowBack,
+                    contentDescription = Strings.CD_BACK,
+                    tint = White,
+                    modifier = Modifier
+                        .size(Dimen.SPACING_30)
+                        .noRippleClickable { onBackClick() }
+                )
 
                 Text(
                     text = title,
@@ -81,17 +78,14 @@ fun ToolbarAddEdit(
                 )
 
                 if (actionIcon != null && onActionClick != null) {
-                    IconButton(
-                        onClick = onActionClick,
-                        modifier = Modifier.size(Dimen.SPACING_30)
-                    ) {
-                        Icon(
-                            imageVector = actionIcon,
-                            contentDescription = null,
-                            tint = White,
-                            modifier = Modifier.size(Dimen.SPACING_30)
-                        )
-                    }
+                    Icon(
+                        imageVector = actionIcon,
+                        contentDescription = null,
+                        tint = White,
+                        modifier = Modifier
+                            .size(Dimen.SPACING_30)
+                            .noRippleClickable { onActionClick() }
+                    )
                 } else {
                     Box(modifier = Modifier.size(Dimen.SPACING_30))
                 }

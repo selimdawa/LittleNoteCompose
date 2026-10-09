@@ -1,7 +1,6 @@
 package com.flatcode.littlenotecompose.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,6 +25,7 @@ import androidx.compose.ui.window.Dialog
 import com.flatcode.littlenotecompose.ui.theme.Dimen
 import com.flatcode.littlenotecompose.ui.theme.Strings
 import com.flatcode.littlenotecompose.utils.DATA
+import com.flatcode.littlenotecompose.utils.noRippleClickable
 
 @Composable
 fun CloseAppDialogContent(
@@ -73,7 +73,7 @@ fun CloseAppDialogContent(
                         modifier = Modifier
                             .weight(1f)
                             .padding(end = Dimen.SPACING_5)
-                            .clickable { onDismiss() },
+                            .noRippleClickable { onDismiss() },
                         shape = RoundedCornerShape(Dimen.SPACING_8),
                         colors = CardDefaults.cardColors(containerColor = Color.White)
                     ) {
@@ -93,7 +93,7 @@ fun CloseAppDialogContent(
                         modifier = Modifier
                             .weight(1f)
                             .padding(start = Dimen.SPACING_5)
-                            .clickable { onConfirm() },
+                            .noRippleClickable { onConfirm() },
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
@@ -281,7 +281,7 @@ fun AnonymousLogoutWarningDialogContent(
                         modifier = Modifier
                             .weight(1f)
                             .padding(end = Dimen.SPACING_5)
-                            .clickable { onSyncNotes() },
+                            .noRippleClickable { onSyncNotes() },
                         shape = RoundedCornerShape(Dimen.SPACING_8),
                         colors = CardDefaults.cardColors(containerColor = Color.White)
                     ) {
@@ -301,7 +301,7 @@ fun AnonymousLogoutWarningDialogContent(
                         modifier = Modifier
                             .weight(1f)
                             .padding(start = Dimen.SPACING_5)
-                            .clickable { onLogout() },
+                            .noRippleClickable { onLogout() },
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
@@ -398,7 +398,7 @@ fun LoginWarningDialogContent(
                         modifier = Modifier
                             .weight(1f)
                             .padding(end = Dimen.SPACING_5)
-                            .clickable { onSaveNotes() },
+                            .noRippleClickable { onSaveNotes() },
                         shape = RoundedCornerShape(Dimen.SPACING_8),
                         colors = CardDefaults.cardColors(containerColor = Color.White)
                     ) {
@@ -418,7 +418,7 @@ fun LoginWarningDialogContent(
                         modifier = Modifier
                             .weight(1f)
                             .padding(start = Dimen.SPACING_5)
-                            .clickable { onContinue() },
+                            .noRippleClickable { onContinue() },
                         contentAlignment = Alignment.Center
                     ) {
                         Text(

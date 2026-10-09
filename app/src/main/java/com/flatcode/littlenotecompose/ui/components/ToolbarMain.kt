@@ -14,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,6 +28,7 @@ import com.flatcode.littlenotecompose.ui.theme.Dimen
 import com.flatcode.littlenotecompose.ui.theme.Strings
 import com.flatcode.littlenotecompose.ui.theme.White
 import com.flatcode.littlenotecompose.utils.DATA.MC_BG
+import com.flatcode.littlenotecompose.utils.noRippleClickable
 import io.selimdawa.multicolors.MultiColorButton
 
 @Composable
@@ -69,17 +69,14 @@ fun ToolbarMain(
 
                 Spacer(modifier = Modifier.width(Dimen.SPACING_10))
 
-                IconButton(
-                    onClick = onAddClick,
-                    modifier = Modifier.size(Dimen.SPACING_30)
-                ) {
-                    Icon(
-                        imageVector = AppIcons.AddCircle,
-                        contentDescription = Strings.CD_ADD,
-                        tint = White,
-                        modifier = Modifier.size(Dimen.SPACING_30)
-                    )
-                }
+                Icon(
+                    imageVector = AppIcons.AddCircle,
+                    contentDescription = Strings.CD_ADD,
+                    tint = White,
+                    modifier = Modifier
+                        .size(Dimen.SPACING_30)
+                        .noRippleClickable { onAddClick() }
+                )
 
                 Text(
                     text = "${Strings.MY_NOTES} ($notesCount)",
@@ -92,44 +89,35 @@ fun ToolbarMain(
                     textAlign = TextAlign.Center
                 )
 
-                IconButton(
-                    onClick = onLogoutClick,
-                    modifier = Modifier.size(Dimen.SPACING_30)
-                ) {
-                    Icon(
-                        imageVector = AppIcons.Power,
-                        contentDescription = Strings.CD_LOGOUT,
-                        tint = White,
-                        modifier = Modifier.size(Dimen.SPACING_30)
-                    )
-                }
+                Icon(
+                    imageVector = AppIcons.Power,
+                    contentDescription = Strings.CD_LOGOUT,
+                    tint = White,
+                    modifier = Modifier
+                        .size(Dimen.SPACING_30)
+                        .noRippleClickable { onLogoutClick() }
+                )
 
                 Spacer(modifier = Modifier.width(Dimen.SPACING_8))
 
                 if (isAnonymous) {
-                    IconButton(
-                        onClick = onSyncClick,
-                        modifier = Modifier.size(Dimen.SPACING_30)
-                    ) {
-                        Icon(
-                            imageVector = AppIcons.Sync,
-                            contentDescription = Strings.CD_SYNC,
-                            tint = White,
-                            modifier = Modifier.size(Dimen.SPACING_30)
-                        )
-                    }
+                    Icon(
+                        imageVector = AppIcons.Sync,
+                        contentDescription = Strings.CD_SYNC,
+                        tint = White,
+                        modifier = Modifier
+                            .size(Dimen.SPACING_30)
+                            .noRippleClickable { onSyncClick() }
+                    )
                 } else {
-                    IconButton(
-                        onClick = onInfoClick,
-                        modifier = Modifier.size(Dimen.SPACING_30)
-                    ) {
-                        Icon(
-                            imageVector = AppIcons.Info,
-                            contentDescription = Strings.CD_INFO,
-                            tint = White,
-                            modifier = Modifier.size(Dimen.SPACING_30)
-                        )
-                    }
+                    Icon(
+                        imageVector = AppIcons.Info,
+                        contentDescription = Strings.CD_INFO,
+                        tint = White,
+                        modifier = Modifier
+                            .size(Dimen.SPACING_30)
+                            .noRippleClickable { onInfoClick() }
+                    )
                 }
             }
         }

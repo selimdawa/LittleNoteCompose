@@ -9,7 +9,6 @@ object Strings {
     const val ERROR_EMPTY = "Can not Save note with Empty Field."
     const val ERROR_LOG = "Error ! "
     const val TEMPORARY_LOG = "Logged in With Temporary Account."
-    const val TEMPORARY_CONNECT = "Your Are Connected."
     const val ALERT_DELETE_TITLE = "Are you sure ?"
     const val ALERT_DELETE_MESSAGE = "You are logged in with Temporary Account. Logging out will Delete All the notes."
     const val ALERT_DELETE_POSITIVE = "Sync Note"
@@ -26,7 +25,6 @@ object Strings {
     const val LOGIN = "Login"
     const val PASSWORD = "Password"
     const val EMAIL = "Email"
-    const val DESCRIPTION_HERE = "Description Here"
     const val TITLE_HERE = "Title Here"
     const val CD_BACK = "Back"
     const val CD_LOGIN = "Login"
@@ -40,5 +38,4 @@ object Strings {
     const val DO_YOU_WANT_TO_EXIT = "Do you want to Exit ?"
     const val NO = "NO"
     const val YES = "YES"
-    const val USER_VISIBLE_DESCRIPTION = "This app allows you to create and manage personal notes using AI agents."
 }
