@@ -10,6 +10,8 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -59,6 +61,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxSize()
                         .statusBarsPadding()
+                        .navigationBarsPadding()
+                        .imePadding()
                 )
             }
         }
@@ -171,11 +175,16 @@ fun LittleNoteNavHost(
         }
 
         composable(Routes.REGISTER) {
-            RegisterScreen(authViewModel = authViewModel, onNavigateToHome = {
-                navController.navigate(Routes.HOME) {
-                    popUpTo(Routes.HOME) { inclusive = true }
-                }
-            }, onNavigateToLogin = { navController.navigate(Routes.LOGIN) })
+            RegisterScreen(
+                authViewModel = authViewModel,
+                onNavigateToHome = {
+                    navController.navigate(Routes.HOME) {
+                        popUpTo(Routes.HOME) { inclusive = true }
+                    }
+                },
+                onNavigateToLogin = { navController.navigate(Routes.LOGIN) },
+                onNavigateToForgetPassword = { navController.navigate(Routes.FORGET_PASSWORD) }
+            )
         }
 
         composable(Routes.FORGET_PASSWORD) {

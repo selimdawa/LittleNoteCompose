@@ -60,7 +60,8 @@ import com.google.firebase.auth.EmailAuthProvider
 fun RegisterScreen(
     authViewModel: AuthViewModel,
     onNavigateToHome: () -> Unit,
-    onNavigateToLogin: () -> Unit
+    onNavigateToLogin: () -> Unit,
+    onNavigateToForgetPassword: () -> Unit
 ) {
     val context = LocalContext.current
     val authStatus by authViewModel.authStatus.collectAsState()
@@ -80,6 +81,7 @@ fun RegisterScreen(
 
     RegisterContent(
         onNavigateToLogin = onNavigateToLogin,
+        onNavigateToForgetPassword = onNavigateToForgetPassword,
         onRegister = { credential, username ->
             authViewModel.linkCredential(credential, username)
         }
@@ -89,6 +91,7 @@ fun RegisterScreen(
 @Composable
 fun RegisterContent(
     onNavigateToLogin: () -> Unit = {},
+    onNavigateToForgetPassword: () -> Unit = {},
     onRegister: (AuthCredential, String) -> Unit = { _, _ -> }
 ) {
     val context = LocalContext.current
@@ -137,271 +140,276 @@ fun RegisterContent(
                 )
             }
 
-            Column(
+            Box(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
                     .padding(Dimen.SPACING_15)
                     .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.Center
+                contentAlignment = Alignment.Center
             ) {
-                Row(
-                    modifier = Modifier.padding(Dimen.SPACING_10),
-                    verticalAlignment = Alignment.CenterVertically
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.Start
                 ) {
-                    Icon(imageVector = AppIcons.Person, contentDescription = null, tint = COLOR_ERROR)
-                    Spacer(modifier = Modifier.width(Dimen.SPACING_5))
-                    Text(text = Strings.USERNAME, color = COLOR_ERROR, fontSize = Dimen.TEXT_SIZE_14, fontWeight = FontWeight.Bold)
-                }
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .background(
-                            color = DATA.COLOR_ON_BACKGROUND,
-                            shape = RoundedCornerShape(Dimen.CARD_CORNER_RADIUS_MEDIUM)
-                        )
-                        .border(
-                            width = 2.dp,
-                            color = MC_TRACK,
-                            shape = RoundedCornerShape(Dimen.CARD_CORNER_RADIUS_MEDIUM)
-                        )
-                        .padding(horizontal = Dimen.SPACING_15),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    if (username.isEmpty()) {
-                        Text(
-                            text = Strings.APP_NAME,
-                            color = COLOR_ERROR.copy(alpha = 0.5f),
-                            fontSize = Dimen.TEXT_SIZE_14,
-                            fontWeight = FontWeight.Normal
-                        )
-                    }
-                    BasicTextField(
-                        value = username,
-                        onValueChange = { username = it },
-                        singleLine = true,
-                        textStyle = TextStyle(
-                            color = COLOR_ERROR,
-                            fontSize = Dimen.TEXT_SIZE_14,
-                            fontWeight = FontWeight.Normal
-                        ),
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.padding(Dimen.SPACING_10),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(imageVector = AppIcons.Email, contentDescription = null, tint = COLOR_ERROR)
-                    Spacer(modifier = Modifier.width(Dimen.SPACING_5))
-                    Text(text = Strings.EMAIL, color = COLOR_ERROR, fontSize = Dimen.TEXT_SIZE_14, fontWeight = FontWeight.Bold)
-                }
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .background(
-                            color = DATA.COLOR_ON_BACKGROUND,
-                            shape = RoundedCornerShape(Dimen.CARD_CORNER_RADIUS_MEDIUM)
-                        )
-                        .border(
-                            width = 2.dp,
-                            color = MC_TRACK,
-                            shape = RoundedCornerShape(Dimen.CARD_CORNER_RADIUS_MEDIUM)
-                        )
-                        .padding(horizontal = Dimen.SPACING_15),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    if (email.isEmpty()) {
-                        Text(
-                            text = Strings.EMAIL_EXAMPLE,
-                            color = COLOR_ERROR.copy(alpha = 0.5f),
-                            fontSize = Dimen.TEXT_SIZE_14,
-                            fontWeight = FontWeight.Normal
-                        )
-                    }
-                    BasicTextField(
-                        value = email,
-                        onValueChange = { email = it },
-                        singleLine = true,
-                        textStyle = TextStyle(
-                            color = COLOR_ERROR,
-                            fontSize = Dimen.TEXT_SIZE_14,
-                            fontWeight = FontWeight.Normal
-                        ),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.padding(Dimen.SPACING_10),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(imageVector = AppIcons.Lock, contentDescription = null, tint = COLOR_ERROR)
-                    Spacer(modifier = Modifier.width(Dimen.SPACING_5))
-                    Text(text = Strings.PASSWORD, color = COLOR_ERROR, fontSize = Dimen.TEXT_SIZE_14, fontWeight = FontWeight.Bold)
-                }
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .background(
-                            color = DATA.COLOR_ON_BACKGROUND,
-                            shape = RoundedCornerShape(Dimen.CARD_CORNER_RADIUS_MEDIUM)
-                        )
-                        .border(
-                            width = 2.dp,
-                            color = MC_TRACK,
-                            shape = RoundedCornerShape(Dimen.CARD_CORNER_RADIUS_MEDIUM)
-                        )
-                        .padding(horizontal = Dimen.SPACING_15),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    if (confirmPassword.isEmpty()) {
-                        Text(
-                            text = Strings.PASSWORD_HINT,
-                            color = COLOR_ERROR.copy(alpha = 0.5f),
-                            fontSize = Dimen.TEXT_SIZE_14,
-                            fontWeight = FontWeight.Normal
-                        )
-                    }
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.padding(Dimen.SPACING_10),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        BasicTextField(
-                            value = confirmPassword,
-                            onValueChange = { confirmPassword = it },
-                            singleLine = true,
-                            textStyle = TextStyle(
-                                color = COLOR_ERROR,
-                                fontSize = Dimen.TEXT_SIZE_14,
-                                fontWeight = FontWeight.Normal
-                            ),
-                            visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                            modifier = Modifier.weight(1f)
-                        )
-
+                        Icon(imageVector = AppIcons.Person, contentDescription = null, tint = COLOR_ERROR)
                         Spacer(modifier = Modifier.width(Dimen.SPACING_5))
-
-                        Icon(
-                            imageVector = if (confirmPasswordVisible) AppIcons.Visibility else AppIcons.VisibilityOff,
-                            contentDescription = "Toggle Confirm Password Visibility",
-                            tint = COLOR_ERROR,
-                            modifier = Modifier
-                                .size(24.dp)
-                                .noRippleClickable { confirmPasswordVisible = !confirmPasswordVisible }
-                        )
+                        Text(text = Strings.USERNAME, color = COLOR_ERROR, fontSize = Dimen.TEXT_SIZE_14, fontWeight = FontWeight.Bold)
                     }
-                }
 
-                Spacer(modifier = Modifier.height(Dimen.SPACING_10))
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .background(
-                            color = DATA.COLOR_ON_BACKGROUND,
-                            shape = RoundedCornerShape(Dimen.CARD_CORNER_RADIUS_MEDIUM)
-                        )
-                        .border(
-                            width = 2.dp,
-                            color = MC_TRACK,
-                            shape = RoundedCornerShape(Dimen.CARD_CORNER_RADIUS_MEDIUM)
-                        )
-                        .padding(horizontal = Dimen.SPACING_15),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    if (password.isEmpty()) {
-                        Text(
-                            text = Strings.PASSWORD_HINT,
-                            color = COLOR_ERROR.copy(alpha = 0.5f),
-                            fontSize = Dimen.TEXT_SIZE_14,
-                            fontWeight = FontWeight.Normal
-                        )
-                    }
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        BasicTextField(
-                            value = password,
-                            onValueChange = { password = it },
-                            singleLine = true,
-                            textStyle = TextStyle(
-                                color = COLOR_ERROR,
-                                fontSize = Dimen.TEXT_SIZE_14,
-                                fontWeight = FontWeight.Normal
-                            ),
-                            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                            modifier = Modifier.weight(1f)
-                        )
-
-                        Spacer(modifier = Modifier.width(Dimen.SPACING_5))
-
-                        Icon(
-                            imageVector = if (passwordVisible) AppIcons.Visibility else AppIcons.VisibilityOff,
-                            contentDescription = "Toggle Password Visibility",
-                            tint = COLOR_ERROR,
-                            modifier = Modifier
-                                .size(24.dp)
-                                .noRippleClickable { passwordVisible = !passwordVisible }
-                        )
-                    }
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = Dimen.SPACING_15),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
                     Box(
                         modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
                             .background(
+                                color = DATA.COLOR_ON_BACKGROUND,
+                                shape = RoundedCornerShape(Dimen.CARD_CORNER_RADIUS_MEDIUM)
+                            )
+                            .border(
+                                width = 2.dp,
                                 color = MC_TRACK,
                                 shape = RoundedCornerShape(Dimen.CARD_CORNER_RADIUS_MEDIUM)
                             )
-                            .noRippleClickable { onNavigateToLogin() }
-                            .padding(Dimen.SPACING_10),
-                        contentAlignment = Alignment.Center
+                            .padding(horizontal = Dimen.SPACING_15),
+                        contentAlignment = Alignment.CenterStart
                     ) {
-                        Text(
-                            text = Strings.LOGIN,
-                            color = White,
-                            fontSize = Dimen.TEXT_SIZE_14,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center
+                        if (username.isEmpty()) {
+                            Text(
+                                text = Strings.APP_NAME,
+                                color = COLOR_ERROR.copy(alpha = 0.5f),
+                                fontSize = Dimen.TEXT_SIZE_14,
+                                fontWeight = FontWeight.Normal
+                            )
+                        }
+                        BasicTextField(
+                            value = username,
+                            onValueChange = { username = it },
+                            singleLine = true,
+                            textStyle = TextStyle(
+                                color = COLOR_ERROR,
+                                fontSize = Dimen.TEXT_SIZE_14,
+                                fontWeight = FontWeight.Normal
+                            ),
+                            modifier = Modifier.fillMaxWidth()
                         )
+                    }
+
+                    Row(
+                        modifier = Modifier.padding(Dimen.SPACING_10),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(imageVector = AppIcons.Email, contentDescription = null, tint = COLOR_ERROR)
+                        Spacer(modifier = Modifier.width(Dimen.SPACING_5))
+                        Text(text = Strings.EMAIL, color = COLOR_ERROR, fontSize = Dimen.TEXT_SIZE_14, fontWeight = FontWeight.Bold)
                     }
 
                     Box(
                         modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
                             .background(
-                                color = Black,
+                                color = DATA.COLOR_ON_BACKGROUND,
                                 shape = RoundedCornerShape(Dimen.CARD_CORNER_RADIUS_MEDIUM)
                             )
-                            .noRippleClickable { }
-                            .padding(Dimen.SPACING_10),
-                        contentAlignment = Alignment.Center
+                            .border(
+                                width = 2.dp,
+                                color = MC_TRACK,
+                                shape = RoundedCornerShape(Dimen.CARD_CORNER_RADIUS_MEDIUM)
+                            )
+                            .padding(horizontal = Dimen.SPACING_15),
+                        contentAlignment = Alignment.CenterStart
                     ) {
-                        Text(
-                            text = Strings.FORGET_PASSWORD,
-                            color = White,
-                            fontSize = Dimen.TEXT_SIZE_14,
-                            fontWeight = FontWeight.Normal,
-                            textAlign = TextAlign.Center
+                        if (email.isEmpty()) {
+                            Text(
+                                text = Strings.EMAIL_EXAMPLE,
+                                color = COLOR_ERROR.copy(alpha = 0.5f),
+                                fontSize = Dimen.TEXT_SIZE_14,
+                                fontWeight = FontWeight.Normal
+                            )
+                        }
+                        BasicTextField(
+                            value = email,
+                            onValueChange = { email = it },
+                            singleLine = true,
+                            textStyle = TextStyle(
+                                color = COLOR_ERROR,
+                                fontSize = Dimen.TEXT_SIZE_14,
+                                fontWeight = FontWeight.Normal
+                            ),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                            modifier = Modifier.fillMaxWidth()
                         )
+                    }
+
+                    Row(
+                        modifier = Modifier.padding(Dimen.SPACING_10),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(imageVector = AppIcons.Lock, contentDescription = null, tint = COLOR_ERROR)
+                        Spacer(modifier = Modifier.width(Dimen.SPACING_5))
+                        Text(text = Strings.PASSWORD, color = COLOR_ERROR, fontSize = Dimen.TEXT_SIZE_14, fontWeight = FontWeight.Bold)
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                            .background(
+                                color = DATA.COLOR_ON_BACKGROUND,
+                                shape = RoundedCornerShape(Dimen.CARD_CORNER_RADIUS_MEDIUM)
+                            )
+                            .border(
+                                width = 2.dp,
+                                color = MC_TRACK,
+                                shape = RoundedCornerShape(Dimen.CARD_CORNER_RADIUS_MEDIUM)
+                            )
+                            .padding(horizontal = Dimen.SPACING_15),
+                        contentAlignment = Alignment.CenterStart
+                    ) {
+                        if (password.isEmpty()) {
+                            Text(
+                                text = Strings.PASSWORD_HINT,
+                                color = COLOR_ERROR.copy(alpha = 0.5f),
+                                fontSize = Dimen.TEXT_SIZE_14,
+                                fontWeight = FontWeight.Normal
+                            )
+                        }
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            BasicTextField(
+                                value = password,
+                                onValueChange = { password = it },
+                                singleLine = true,
+                                textStyle = TextStyle(
+                                    color = COLOR_ERROR,
+                                    fontSize = Dimen.TEXT_SIZE_14,
+                                    fontWeight = FontWeight.Normal
+                                ),
+                                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                                modifier = Modifier.weight(1f)
+                            )
+
+                            Spacer(modifier = Modifier.width(Dimen.SPACING_5))
+
+                            Icon(
+                                imageVector = if (passwordVisible) AppIcons.Visibility else AppIcons.VisibilityOff,
+                                contentDescription = "Toggle Password Visibility",
+                                tint = COLOR_ERROR,
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .noRippleClickable { passwordVisible = !passwordVisible }
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(Dimen.SPACING_10))
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                            .background(
+                                color = DATA.COLOR_ON_BACKGROUND,
+                                shape = RoundedCornerShape(Dimen.CARD_CORNER_RADIUS_MEDIUM)
+                            )
+                            .border(
+                                width = 2.dp,
+                                color = MC_TRACK,
+                                shape = RoundedCornerShape(Dimen.CARD_CORNER_RADIUS_MEDIUM)
+                            )
+                            .padding(horizontal = Dimen.SPACING_15),
+                        contentAlignment = Alignment.CenterStart
+                    ) {
+                        if (confirmPassword.isEmpty()) {
+                            Text(
+                                text = Strings.PASSWORD_HINT,
+                                color = COLOR_ERROR.copy(alpha = 0.5f),
+                                fontSize = Dimen.TEXT_SIZE_14,
+                                fontWeight = FontWeight.Normal
+                            )
+                        }
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            BasicTextField(
+                                value = confirmPassword,
+                                onValueChange = { confirmPassword = it },
+                                singleLine = true,
+                                textStyle = TextStyle(
+                                    color = COLOR_ERROR,
+                                    fontSize = Dimen.TEXT_SIZE_14,
+                                    fontWeight = FontWeight.Normal
+                                ),
+                                visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                                modifier = Modifier.weight(1f)
+                            )
+
+                            Spacer(modifier = Modifier.width(Dimen.SPACING_5))
+
+                            Icon(
+                                imageVector = if (confirmPasswordVisible) AppIcons.Visibility else AppIcons.VisibilityOff,
+                                contentDescription = "Toggle Confirm Password Visibility",
+                                tint = COLOR_ERROR,
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .noRippleClickable { confirmPasswordVisible = !confirmPasswordVisible }
+                            )
+                        }
+                    }
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = Dimen.SPACING_15),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .background(
+                                    color = MC_TRACK,
+                                    shape = RoundedCornerShape(Dimen.CARD_CORNER_RADIUS_MEDIUM)
+                                )
+                                .noRippleClickable { onNavigateToLogin() }
+                                .padding(Dimen.SPACING_10),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = Strings.LOGIN,
+                                color = White,
+                                fontSize = Dimen.TEXT_SIZE_14,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .background(
+                                    color = Black,
+                                    shape = RoundedCornerShape(Dimen.CARD_CORNER_RADIUS_MEDIUM)
+                                )
+                                .noRippleClickable { onNavigateToForgetPassword() }
+                                .padding(Dimen.SPACING_10),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = Strings.FORGET_PASSWORD,
+                                color = White,
+                                fontSize = Dimen.TEXT_SIZE_14,
+                                fontWeight = FontWeight.Normal,
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
                 }
             }
