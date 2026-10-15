@@ -1,23 +1,59 @@
-# Add project specific ProGuard rules here.
-# By default, the flags in this file are appended to flags specified
-# in C:\Users\...\AppData\Local\Android\Sdk/tools/proguard/proguard-android-optimize.txt
-# You can edit the include line and add additional flags to this file.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+﻿# ProGuard / R8 Rules for com.flatcode apps
 
-# Keep generic signatures and line numbers for stack traces
--keepattributes Signature, InnerClasses, EnclosingMethod, *Annotation*, SourceFile, LineNumberTable
+# -------------------------------------------------------------------------
+# Keep AndroidX Navigation & Fragment classes and constructors
+# -------------------------------------------------------------------------
+-keep public class * extends androidx.fragment.app.Fragment {
+    public <init>();
+}
+-keepnames class * extends androidx.fragment.app.Fragment
 
-# Kotlin Coroutines
+-keep public class * extends androidx.activity.ComponentActivity {
+    public <init>();
+}
+
+# -------------------------------------------------------------------------
+# Keep ViewBinding classes
+# -------------------------------------------------------------------------
+-keep class * implements androidx.viewbinding.ViewBinding {
+    public static *** bind(android.view.View);
+    public static *** inflate(...);
+}
+
+# -------------------------------------------------------------------------
+# Keep UI package classes & custom UI libraries
+# -------------------------------------------------------------------------
+-keep class com.flatcode.**.ui.** { *; }
+-keep class io.selimdawa.bubblebottom.** { *; }
+-keep class com.smarteist.autoimageslider.** { *; }
+
+# -------------------------------------------------------------------------
+# Keep Data Models & POJOs for Firebase Realtime Database, Firestore, and Room
+# -------------------------------------------------------------------------
+-keep class com.flatcode.**.model.** { *; }
+-keepclassmembers class com.flatcode.**.model.** {
+    <fields>;
+    <methods>;
+    public <init>();
+}
+-keep class com.flatcode.**.db.** { *; }
+-keep class * extends androidx.room.RoomDatabase
+-keep class * extends androidx.room.Entity
+-keep interface * extends androidx.room.Dao
+
+# -------------------------------------------------------------------------
+# Keep Hilt / Dagger generated classes & ViewModels
+# -------------------------------------------------------------------------
+-keep class * extends androidx.lifecycle.ViewModel
+-keepclassmembers class * extends androidx.lifecycle.ViewModel {
+    public <init>(...);
+}
+
+# -------------------------------------------------------------------------
+# Preserve annotations & source attributes for stacktraces and reflection
+# -------------------------------------------------------------------------
+-keepattributes *Annotation*, Signature, InnerClasses, EnclosingMethod
+-keepattributes SourceFile, LineNumberTable
+# Project Specific Rules
 -dontwarn kotlinx.coroutines.**
 
-# Room Database
--keepclassmembers class * extends androidx.room.RoomDatabase {
-    <init>();
-}
-
-# Hilt / Dagger
--keepclassmembers class * {
-    @javax.inject.Inject <init>(...);
-}
